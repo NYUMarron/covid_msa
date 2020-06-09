@@ -5,15 +5,23 @@ import urllib
 from sqlalchemy import create_engine
 from fast_to_SQL import fast_to_SQL as fts
 
-def get_msa_data():
+def get_msa_data(matrix):
     """
     Returns a dataframe of cases and deaths by MSAs
+    :param matrix(str): Type of MSA data to return
     :return: DataFrame, DataFrame
     """
-    cases_path = os.path.join(os.pardir,'data', 'all_msas_cases.csv')
-    deaths_path = os.path.join(os.pardir, 'data', 'all_msas_deaths.csv')
-    return pd.read_csv(cases_path, index_col='msas'), pd.read_csv(deaths_path, index_col='msas')
-
+    
+    
+    if matrix == 'cummulative':
+        cases_path = os.path.join(os.pardir, 'data', 'all_msas_cases.csv')
+        deaths_path = os.path.join(os.pardir, 'data', 'all_msas_deaths.csv')
+        return pd.read_csv(cases_path, index_col='msas'), pd.read_csv(deaths_path, index_col='msas')
+    
+    if matrix == 'daily_avg':
+        cases_path = os.path.join(os.pardir, 'data', '7day_avg_cases.csv')
+        deaths_path = os.path.join(os.pardir, 'data', '7day_avg_deaths.csv')
+        return pd.read_csv(cases_path, index_col='msas'), pd.read_csv(deaths_path, index_col='msas')
 
 def is_db_credentials_defined():
     """
@@ -84,13 +92,16 @@ def upload_to_db(df,table,engine):
         
         
 def main():
-    cases, deaths = get_msa_data()
+    cases, deaths = get_msa_data(matrix='cummulative')
+    daily_avg_cases, daily_avg_deaths = get_msa_data(matrix='daily_avg')
     
     
     if is_db_credentials_defined() and is_db_accessible():
         engine = get_db_engine()
         upload_to_db(cases, 'cases', engine)
-        upload_to_db(cases, 'deaths', engine)
+        upload_to_db(deaths, 'deaths', engine)
+        upload_to_db(daily_avg_cases,'daily_avg_cases', engine)
+        upload_to_db(daily_avg_deaths,'daily_avg_deaths', engine)
         print('Done')
     
     else:
