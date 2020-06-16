@@ -1,0 +1,23 @@
+@import "https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Open+Sans:wght@400;600;700&family=Lato:wght@900&display=swap";
+@import "reset.css";
+@import "header.css";
+@import "section.css";
+@import "dashboard.css";
+
+html{
+    width:95vw;
+}
+
+body{
+    width:100%;
+    margin-left:20px;
+    margin-right:20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header, main{
+    width:100%;
+    max-width:1024px;
+}

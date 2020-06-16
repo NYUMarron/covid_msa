@@ -1,0 +1,131 @@
+#Dashboard{
+    border-bottom:1px solid #969696;
+}
+.Dashboard__menu{
+    display:flex;
+    flex-direction: column;
+}
+
+.Dashboard__menu h4{
+    font-size:35px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.Dashboard__menu h5{
+    margin-right:15px;
+    margin-top: 15px;
+    font-weight:300;
+}
+
+.menu__row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.menu__category{
+    width:100%;
+    display:flex;
+    justify-content: flex-start;
+    align-items:center;
+    flex-wrap: wrap;
+}
+
+.menu__category button{
+    background-color:#FFFFFF;
+    border: 1px solid #424242;
+    color:#212121;
+    margin-right:11px;
+    margin-top: 15px;
+    padding:3px 4px;
+}
+
+.menu__category button:hover{
+    background-color:#424242;
+    color:#FFFFFF;
+}
+
+
+.menu__MSA{
+    display:flex;
+    align-items:center;
+    justify-content: flex-start;
+}
+
+.menu__MSA-select{
+    margin-top:15px;
+    margin-right:20px;
+}
+
+.menu_slider{
+    display:flex;
+    align-items: center;
+}
+
+.menu_slider__slider{
+    max-width:500px;
+    width:50vw;
+    margin-top:17px;
+    -webkit-appearance: none;
+    height: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.5;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.menu_slider__slider:hover {
+    opacity: 1;
+}
+
+.menu_slider__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 7px;
+    height: 20px;
+    background: #424242;
+    cursor: pointer;
+}
+
+.menu_slider__slider::-moz-range-thumb {
+    box-sizing: border-box;
+    appearance: none;
+    width: 7px;
+    height: 20px;
+    background: #424242;
+    cursor: pointer;
+}
+.menu_slider__slider::-ms-thumb{
+    appearance: none;
+    width: 7px;
+    height: 20px;
+    background: #424242;
+    cursor: pointer;
+}
+.Dashboard__Dashboard{
+
+    display:flex;
+}
+
+.Dashboard__map{
+    margin:20px 0;
+    width:55%;
+    border-right:1px solid #969696;
+    display:flex;
+    justify-content: center;
+}
+
+.Dashboard__chart{
+    width:45%;
+    display:flex;
+    justify-content: center;
+    padding-top:18px;
+}
+
+.Dashboard__death{
+    border-top:1px dashed #969696;
+    padding-top:30px;
+}

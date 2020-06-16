@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="This is --" name="description">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="js/libraries/d3.min.js"></script>
+    <title>Monitoring COVID-19 in US Metropolitan Areas</title>
+</head>
+<body>
+<header id="header">
+    <div id="header__logo">
+        <img alt="NYU Marron Institute" src="images/marron.png"/>
+    </div>
+    <h1 id="header__title">Where are U.S. Cities on their ‘Curve’?</h1>
+    <h2 id="header__subtitle">Monitoring COVID-19 in US Metropolitan Areas</h2>
+</header>
+<main>
+    <section class="section" id="About">
+        <div class="section__title" onclick="expandContents(this)">
+            <div class="title__column">
+                <h3 class="header__title">About/purpose</h3>
+            </div>
+            <div class="title__column">
+                <p class="section__title__click">Click to expand ▼</p>
+            </div>
+        </div>
+        <div class="section__content hidden" id="About__content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consequatur cumque, dolore esse
+                exercitationem illo ipsam, laborum maxime nam necessitatibus nihil nobis non odio pariatur praesentium
+                quam, reiciendis rerum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda atque aut cumque, dolorum ducimus,
+                earum eligendi excepturi exercitationem fugit magnam minima nam, omnis perferendis quam sint tenetur!
+                Assumenda, hic, neque! Aperiam architecto atque esse, et eveniet excepturi ipsa ipsum itaque laborum
+                molestiae nam nostrum, optio porro quasi, qui repellat temporibus velit. Aspernatur, eveniet,
+                temporibus. Accusantium ad aliquam architecto, delectus, eligendi ex id ipsa magni nam, porro provident
+                tempore unde ut? Enim, quaerat rem! Delectus distinctio expedita facere illo impedit laborum, maiores
+                molestiae neque, nesciunt, quis quod soluta temporibus. Animi culpa debitis fugit itaque, molestias
+                numquam quidem vitae. At aut cumque delectus, dolor, expedita fugiat ipsam iusto magnam necessitatibus
+                non perspiciatis porro quae quaerat, quasi quos reiciendis rem ullam vitae voluptatibus voluptatum?
+                Accusamus adipisci autem corporis cupiditate deleniti deserunt esse illo, iusto magni maxime praesentium
+                quam quas quo ratione, reiciendis rem tempore. Autem debitis, deleniti illo, in iste, maxime
+                necessitatibus nesciunt officiis quam quidem sequi similique veniam. Accusantium assumenda cumque
+                deleniti ea eius minima nam numquam, obcaecati officiis, perferendis provident recusandae repellat
+                reprehenderit, repudiandae saepe soluta tempora veritatis vitae. Dignissimos dolores molestiae nam
+                nostrum officiis veritatis! Amet aut autem beatae commodi, dolorum, earum et illo molestiae odit quasi
+                quibusdam reiciendis.</p>
+        </div>
+    </section>
+    <section class="section" id="MSA">
+        <div class="section__title" onclick="expandContents(this)">
+            <div class="title__column">
+                <h3 class="header__title">What are Metropolitan Statistical Areas (MSAs)?</h3>
+            </div>
+            <div class="title__column">
+                <p>Click to expand ▼</p>
+            </div>
+        </div>
+        <div class="section__content hidden" id="MSA__content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid commodi cumque ea eaque illo incidunt
+                inventore labore, libero magnam pariatur quis quod reprehenderit, sequi! Accusantium assumenda
+                consequatur consequuntur corporis, cum cupiditate enim ex facilis magni nemo neque numquam obcaecati,
+                omnis rem saepe tenetur voluptate voluptatum? Accusamus animi asperiores atque aut consequuntur corporis
+                culpa dolorem, dolores facere facilis fuga fugit hic, in iure iusto laborum laudantium libero magnam
+                maiores minima nisi nobis obcaecati perspiciatis praesentium provident quas quia quidem quo quod ratione
+                saepe sapiente sint soluta ullam veniam voluptate voluptates! Corporis earum exercitationem praesentium
+                quas? Aut doloribus eaque, harum odio odit quo repellat rerum tempore. Aperiam, commodi distinctio,
+                doloremque doloribus earum excepturi numquam possimus, praesentium similique sunt totam vero voluptate
+                voluptatibus! Accusamus adipisci, commodi culpa cum dicta eaque est, modi nesciunt obcaecati, placeat
+                quam sapiente. Ad aliquam architecto at beatae culpa doloremque eaque eligendi est fuga ipsa itaque
+                laudantium maxime mollitia nobis nulla perferendis quaerat quidem quis quod repellat repudiandae rerum,
+                saepe soluta suscipit totam ullam veniam voluptates. Animi at autem blanditiis, commodi corporis
+                deleniti ducimus esse et exercitationem expedita fuga id ipsum iste itaque laborum modi molestiae nobis
+                non possimus quaerat quibusdam quo rem saepe sequi totam, veniam vero vitae.</p>
+            <div id="MSA__chart-case">
+                <h4> Cases</h4>
+                <p>On <span class='today'></span>
+                    there were <span id="caseDailyMSA"></span> new cases in metropolitan areas and
+                    <span id="caseDailyNonMSA"></span> new cases outside metropolitan areas.
+                    Metropolitan areas represented <span id="caseDailyPercentage"></span> percent of new cases.</p>
+                <p> As of <span class='today'></span>
+                    there were <span id="caseTotalMSA"></span> total cases in metropolitan areas and
+                    <span id="caseTotalNonMSA"></span> total cases outside metropolitan areas.</p>
+            </div>
+            <div id="MSA__chart-death">
+                <h4>Deaths</h4>
+                <p>On <span class='today'></span>
+                    there were <span id="deathDailyMSA"></span> new deaths in metropolitan areas and
+                    <span id="deathDailyNonMSA"></span> new deaths outside metropolitan areas.
+                    Metropolitan areas represented <span id="deathDailyPercentage"></span> percent of new cases.</p>
+                <p> As of <span class='today'></span>
+                    there were <span id="deathTotalMSA"></span> total deaths in metropolitan areas and
+                    <span id="deathTotalNonMSA"></span> total deaths outside metropolitan areas.</p>
+
+            </div>
+        </div>
+    </section>
+    <section class="section" id="Curve">
+        <div class="section__title" onclick="expandContents(this)">
+            <div class="title__column">
+                <h3 class="header__title">Understanding cities' curves</h3>
+            </div>
+            <div class="title__column">
+                <p>Click to expand ▼</p>
+            </div>
+        </div>
+
+        <div class="section__content hidden" id="Curve__content">
+            <p>The curve for reported cases (it is the same for reported deaths), at any given date, has five important
+                properties.</p>
+            <ul>
+                <li><span>Duration (A):</span> The number of days from the first reported case until the reporting date
+                </li>
+                <li><span>Days from Peak (B):</span> The number of days from the peak 7-day average of new cases until
+                    the reported date
+                </li>
+                <li><span>Peak New Cases (C):</span> The peak 7-day average of new reported cases by the reporting date
+                </li>
+                <li><span>Current Number of New Cases (D):</span> The 7-day average of new cases on the reporting date
+                </li>
+                <li><span>Total Number of Cases (E):</span> The total number of cases by the reporting date, which
+                    corresponds to the area of the curve at the reporting date
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="section" id="Download">
+        <div class="section__title" onclick="expandContents(this)">
+            <div class="title__column">
+                <h3 class="header__title">Download Center</h3>
+            </div>
+            <div class="title__column">
+                <p>Click to expand ▼</p>
+            </div>
+        </div>
+
+        <div class="section__content hidden" id="Download__content">
+            <div class="content__row">
+                <h5>Type:</h5>
+                <button onclick="download_type_btn(this)">Case</button>
+                <button onclick="download_type_btn(this)">Death</button>
+            </div>
+            <div class="content__row">
+                <h5>MSA: </h5>
+                <div class="download__MSA-selectbox">
+                    <div class="selectBox" onclick="showCheckboxes()">
+                        <select>
+                            <option>Select MSA</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkboxes">
+
+                    </div>
+                </div>
+            </div>
+            <div class="content__row">
+                <div class="content__column">
+                    <h5>Start date:</h5>
+                    <input id='download__time-start' type="date">
+                </div>
+                <div class="content__column">
+                    <h5>End date:</h5>
+                    <input id='download__time-end' type="date">
+                </div>
+            </div>
+            <button onclick="download_csv()">Download</button>
+        </div>
+
+    </section>
+    <section class="section" id="Dashboard">
+        <div class="section__title activate" onclick="expandContents(this)">
+            <div class="title__column">
+                <h3 class="header__title section__title-active">Maps</h3>
+            </div>
+            <div class="title__column">
+                <p>Click to collapse ▲</p>
+            </div>
+        </div>
+        <div class="section__content" id="Dashboard__content">
+            <div class="Dashboard__case">
+                <div class="Dashboard__menu">
+                    <h4>Cases</h4>
+                    <div class="menu__row">
+                        <div class="menu__category">
+                            <h5>Map Category:</h5>
+                            <button>New cases</button>
+                            <button>Total cases</button>
+                            <button>Days from peak</button>
+                            <button>Share of peak value</button>
+                            <button>Five day change (%)</button>
+                            <button>New cases per capita</button>
+                            <button>Total cases per capita</button>
+                        </div>
+                    </div>
+                    <div class="menu__row">
+                        <div class="menu__MSA">
+                            <h5>MSA: </h5>
+                            <select class="menu__MSA-select" id="MSA-select-case" name="msa"
+                                    onchange="updateLineChartDash(this,'case')"></select>
+                        </div>
+                        <div class="menu_slider">
+                            <h5>Date: </h5>
+                            <input class="menu_slider__slider" max="90" min="1" oninput="updateCaseDate(this)" type="range"
+                                   value="90">
+                        </div>
+                    </div>
+                </div>
+                <div class="Dashboard__Dashboard">
+                    <div class="Dashboard__map" id='map_case'>
+
+                    </div>
+                    <div class="Dashboard__chart" id="cases-dashboard">
+                    </div>
+                </div>
+            </div>
+            <div class="Dashboard__death">
+                <div class="Dashboard__menu">
+                    <h4>Deaths</h4>
+                    <div class="menu__row">
+                        <div class="menu__category">
+                            <h5>Map Category:</h5>
+                            <button>New cases</button>
+                            <button>Total cases</button>
+                            <button>Days from peak</button>
+                            <button>Share of peak value</button>
+                            <button>Five day change (%)</button>
+                            <button>New cases per capita</button>
+                            <button>Total cases per capita</button>
+                        </div>
+                    </div>
+                    <div class="menu__row">
+                        <div class="menu__MSA">
+                            <h5>MSA: </h5>
+                            <select class="menu__MSA-select" name="msa"
+                                    onchange="updateLineChartDash(this,'death')"></select>
+                        </div>
+                        <div class="menu_slider">
+                            <h5>Date: </h5>
+                            <input class="menu_slider__slider" max="90" min="1" oninput="updateDeathDate(this)" type="range"
+                                   value="90">
+                        </div>
+                    </div>
+                </div>
+                <div class="Dashboard__Dashboard">
+                    <div class="Dashboard__map" id='map_death'>
+
+                    </div>
+                    <div class="Dashboard__chart" id="deaths-dashboard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+<script defer src="js/linechart.js"></script>
+<script defer src="js/menu.js"></script>
+<script defer src="js/linechartDash.js"></script>
+<script defer src="js/map.js"></script>
+<script defer src="js/download.js"></script>
+<script defer src="js/main.js"></script>
+</html>

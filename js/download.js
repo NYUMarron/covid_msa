@@ -1,0 +1,102 @@
+function dropdownMSA_download(data, menu) {
+    const msaArray = data.map(d => d['msas']);
+    menu.append('label')
+        .attr('for', 'selectAll')
+        .html(`<input type="checkbox" onclick="checkAll(this)" /> Select All`);
+    for (let i = 0; i < msaArray.length; i++) {
+        menu.append('label')
+            .attr('for', msaArray[i])
+            .html(`<input type="checkbox" onclick="dataExtract()" class="download__MSA-checkbox" name="MSA_check" id=${msaArray[i].replace(/\s/g, '').replace(/\./g, '')} /> ${msaArray[i]}`);
+    }
+    downloadDateSetting(store.date);
+}
+
+function downloadDateSetting(date) {
+    const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+    const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
+    const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
+    document.getElementById('download__time-start').value = '2020-01-21';
+    document.getElementById('download__time-end').value = dateString;
+}
+
+function checkAll(source) {
+    let checkboxes = document.getElementsByName('MSA_check');
+    for (let i = 0, n = checkboxes.length; i < n; i++) {
+        checkboxes[i].checked = source.checked;
+    }
+}
+
+function download_type_btn(source) {
+    console.log(source);
+}
+
+function dataExtract() {
+    const timeStart = document.getElementById('download__time-start').value;
+    const timeEnd = document.getElementById('download__time-end').value;
+    const dataType = 'case';
+    //const dataType = document.getElementsByClassName("download__type-selected").value;
+    const checkboxes = document.getElementsByClassName('download__MSA-checkbox');
+    let MSAArray = [];
+    for (let i = 0, n = checkboxes.length; i < n; i++) {
+        if (checkboxes[i].checked) {
+            MSAArray.push(checkboxes[i].id);
+        }
+    }
+    let dataFiltered;
+    if (dataType === 'case') {
+        dataFiltered = store.cases.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
+    } else {
+        dataFiltered = store.deaths.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
+    }
+    let keyLength = Object.keys(dataFiltered[0]).length;
+    let dateArray = Object.keys(dataFiltered[0]).slice(1, keyLength)
+        .filter(d => (d3.timeParse('%Y-%m-%d')(timeStart) <= d3.timeParse('%Y-%m-%d')(d)) & (d3.timeParse('%Y-%m-%d')(timeEnd) >= d3.timeParse('%Y-%m-%d')(d)));
+
+    console.log(dateArray);
+    dataFiltered = dataFiltered.map(function (d) {
+        let obj = {};
+        obj['msas'] = d['msas'];
+        for (let i = 0; i < dateArray.length; i++) {
+            obj[dateArray[i]] = d[dateArray[i]];
+        }
+        return obj;
+    });
+
+
+    let csv = Object.keys(dataFiltered[0]).join(',') + '\n';
+    const arr_length = Object.keys(dataFiltered[0]).length;
+    for (let i = 0; i < dataFiltered.length; i++) {
+        csv += '"' + Object.values(dataFiltered[i])[0] + '"' + ',';
+        csv += Object.values(dataFiltered[i]).slice(1, arr_length).join(',');
+        csv += '\n';
+    }
+    store.csv = csv;
+}
+
+function download_csv() {
+    dataExtract();
+    let hiddenElement = document.createElement('a');
+    const dataType = 'case';
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(store.csv);
+    hiddenElement.target = '_blank';
+    if (dataType === 'case') {
+        hiddenElement.download = 'covid19_case_MSA.csv';
+    } else {
+        hiddenElement.download = 'covid19_death_MSA.csv';
+    }
+    hiddenElement.click();
+}
+
+
+let expanded = false;
+
+function showCheckboxes() {
+    const checkboxes = document.getElementById("checkboxes");
+    if (!expanded) {
+        checkboxes.style.display = "block";
+        expanded = true;
+    } else {
+        checkboxes.style.display = "none";
+        expanded = false;
+    }
+}

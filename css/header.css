@@ -1,0 +1,31 @@
+#header{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin:20px 15px;
+}
+
+#header__logo{
+    width:100%;
+    display:flex;
+    justify-content: flex-start;
+}
+
+#header__logo img{
+    max-width:200px;
+    filter: grayscale(100%);
+}
+
+#header__title{
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight:700;
+    font-size:40px;
+    margin-top:60px;
+    margin-bottom:30px;
+}
+#header__subtitle{
+    font-family: 'Open Sans', sans-serif;
+    font-weight:400;
+    font-size:25px;
+    margin-bottom:40px;
+}
