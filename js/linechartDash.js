@@ -1,20 +1,5 @@
 let pasthoveredDate;
 
-const monthToString = {
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December'
-};
-
 function lineChartDash(data, dataDaily, msa, div, type) {
 
     // store msa value that user selected
@@ -28,15 +13,18 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     let dataTransformed = caseDataPrepDash(dataFiltered);
     let dataTransformedDaily = caseDataPrepDash(dataFilteredDaily);
 
-    const timeStart = d3.min(dataTransformed.map(d => d.date));
     const timeEndDaily = d3.max(dataTransformedDaily.map(d => d.date));
     const timeEndTotal = d3.max(dataTransformed.map(d => d.date));
     const timeEnd = d3.min([timeEndDaily, timeEndTotal]);
+    const timeStart = subtractDays(timeEnd,90);
 
     dataTransformed = dataTransformed.filter(d => d.date <= timeEnd);
     dataTransformedDaily = dataTransformedDaily.filter(d => d.date <= timeEnd);
 
     store.date = timeEnd;
+    console.log(d3.select('#date_start_'+type));
+    d3.select('#date_start_'+type).html(dateToString(timeStart));
+    d3.select('#date_end_'+type).html(dateToString(timeEnd));
 
     // calculate maximum of cases or deaths and date
     let maxCase = d3.max(dataTransformed.map(d => d.cases));
@@ -441,5 +429,26 @@ function updateDeathDate(source) {
         .attr('r', 3);
 
     updateMap(date, 'death');
+
+}
+
+function dateToString(date){
+    const monthToString = {
+        1: 'Jan',
+        2: 'Feb',
+        3: 'Mar',
+        4: 'Apr',
+        5: 'May',
+        6: 'Jun',
+        7: 'Jul',
+        8: 'Aug',
+        9: 'Sept',
+        10: 'Oct',
+        11: 'Nov',
+        12: 'Dec'
+    };
+
+    return monthToString[date.getMonth()+1]+' '+date.getDate();
+
 
 }

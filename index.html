@@ -204,8 +204,12 @@
                         </div>
                         <div class="menu_slider">
                             <h5>Date: </h5>
-                            <input class="menu_slider__slider" max="90" min="1" oninput="updateCaseDate(this)" type="range"
-                                   value="90">
+                            <div class="menu_slider-column">
+                                <input class="menu_slider__slider" max="90" min="0" oninput="updateCaseDate(this)" type="range"
+                                       value="90">
+                                <span class="menu_slider__date-start" id="date_start_case"></span>
+                                <span class="menu_slider__date-end"  id="date_end_case"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,8 +244,12 @@
                         </div>
                         <div class="menu_slider">
                             <h5>Date: </h5>
-                            <input class="menu_slider__slider" max="90" min="1" oninput="updateDeathDate(this)" type="range"
-                                   value="90">
+                            <div class="menu_slider-column">
+                                <input class="menu_slider__slider" max="90" min="0" oninput="updateDeathDate(this)" type="range"
+                                       value="90">
+                                <span class="menu_slider__date-start" id="date_start_death"></span>
+                                <span class="menu_slider__date-end"  id="date_end_death"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

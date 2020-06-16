@@ -64,6 +64,10 @@
     align-items: center;
 }
 
+.menu_slider-column{
+    position:relative;
+}
+
 .menu_slider__slider{
     max-width:500px;
     width:50vw;
@@ -105,6 +109,21 @@
     background: #424242;
     cursor: pointer;
 }
+
+.menu_slider__date-start{
+    position:absolute;
+    bottom:-25px;
+    left:-12px;
+    font-size: 12px;
+}
+
+.menu_slider__date-end{
+    position:absolute;
+    bottom:-25px;
+    right:-15px;
+    font-size: 12px;
+}
+
 .Dashboard__Dashboard{
 
     display:flex;
