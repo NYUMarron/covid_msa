@@ -132,3 +132,22 @@ function updateMap(date, type) {
 
 }
 
+function caseMapBtnClick(source){
+    const selectedBtn = source.textContent;
+    source.classList.add("map_btn-clicked");
+    source.parentNode.querySelectorAll('button').forEach(function(d){
+        if(d.textContent!==selectedBtn){
+            d.classList.remove("map_btn-clicked");
+        }
+    })
+}
+
+function deathMapBtnClick(source){
+    const selectedBtn = source.textContent;
+    source.classList.add("map_btn-clicked");
+    source.parentNode.querySelectorAll('button').forEach(function(d){
+        if(d.textContent!==selectedBtn){
+            d.classList.remove("map_btn-clicked");
+        }
+    })
+}

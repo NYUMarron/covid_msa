@@ -8,8 +8,6 @@ function typeBtnClick(source){
     }
 }
 
-
-
 function dropdownMSA_download(data, menu) {
     const msaArray = data.map(d => d['msas']);
     menu.append('label')
@@ -58,7 +56,6 @@ function dataExtract() {
     let dateArray = Object.keys(dataFiltered[0]).slice(1, keyLength)
         .filter(d => (d3.timeParse('%Y-%m-%d')(timeStart) <= d3.timeParse('%Y-%m-%d')(d)) & (d3.timeParse('%Y-%m-%d')(timeEnd) >= d3.timeParse('%Y-%m-%d')(d)));
 
-    console.log(dateArray);
     dataFiltered = dataFiltered.map(function (d) {
         let obj = {};
         obj['msas'] = d['msas'];
@@ -92,7 +89,6 @@ function download_csv() {
     }
     hiddenElement.click();
 }
-
 
 let expanded = false;
 

@@ -47,6 +47,11 @@
     color:#FFFFFF;
 }
 
+.menu__category .map_btn-clicked{
+    background-color:#424242;
+    color:#FFFFFF;
+}
+
 
 .menu__MSA{
     display:flex;

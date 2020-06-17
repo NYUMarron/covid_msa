@@ -94,7 +94,6 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     // Create grid lines and axises
     caseAxisDash(container, xScale, yScale, yScaleDaily, xAxis, yAxisTotal, yAxisDaily, timeEnd, visWidth, visHeight);
 
-
     // this function is for drawing line graph
     const line = d3.line()
         .x(d => xScale(d.date))
@@ -449,6 +448,4 @@ function dateToString(date){
     };
 
     return monthToString[date.getMonth()+1]+' '+date.getDate();
-
-
 }
