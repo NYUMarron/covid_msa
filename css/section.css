@@ -86,6 +86,15 @@
     color:#FFFFFF;
 }
 
+.content__row button:focus{
+    outline:none;
+}
+
+.content__row .download_type_btn-clicked{
+    background-color:#424242;
+    color:#FFFFFF;
+}
+
 .content__column{
     display:flex;
     margin-right:30px;

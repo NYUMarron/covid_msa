@@ -1,3 +1,15 @@
+function typeBtnClick(source){
+    source.classList.add("download_type_btn-clicked");
+    if(source.textContent==='Case'){
+        source.nextElementSibling.classList.remove("download_type_btn-clicked");
+    }
+    else{
+        source.previousElementSibling.classList.remove("download_type_btn-clicked");
+    }
+}
+
+
+
 function dropdownMSA_download(data, menu) {
     const msaArray = data.map(d => d['msas']);
     menu.append('label')
@@ -15,7 +27,6 @@ function downloadDateSetting(date) {
     const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
     const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
     const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
-    document.getElementById('download__time-start').value = '2020-01-21';
     document.getElementById('download__time-end').value = dateString;
 }
 
@@ -26,15 +37,10 @@ function checkAll(source) {
     }
 }
 
-function download_type_btn(source) {
-    console.log(source);
-}
-
 function dataExtract() {
     const timeStart = document.getElementById('download__time-start').value;
     const timeEnd = document.getElementById('download__time-end').value;
-    const dataType = 'case';
-    //const dataType = document.getElementsByClassName("download__type-selected").value;
+    const dataType = document.getElementsByClassName("download_type_btn-clicked").textContent;
     const checkboxes = document.getElementsByClassName('download__MSA-checkbox');
     let MSAArray = [];
     for (let i = 0, n = checkboxes.length; i < n; i++) {
@@ -43,7 +49,7 @@ function dataExtract() {
         }
     }
     let dataFiltered;
-    if (dataType === 'case') {
+    if (dataType === 'Case') {
         dataFiltered = store.cases.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
     } else {
         dataFiltered = store.deaths.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
@@ -76,10 +82,10 @@ function dataExtract() {
 function download_csv() {
     dataExtract();
     let hiddenElement = document.createElement('a');
-    const dataType = 'case';
+    const dataType =  document.getElementsByClassName("download_type_btn-clicked").textContent;
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(store.csv);
     hiddenElement.target = '_blank';
-    if (dataType === 'case') {
+    if (dataType === 'Case') {
         hiddenElement.download = 'covid19_case_MSA.csv';
     } else {
         hiddenElement.download = 'covid19_death_MSA.csv';

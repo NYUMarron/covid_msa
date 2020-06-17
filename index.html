@@ -140,8 +140,8 @@
         <div class="section__content hidden" id="Download__content">
             <div class="content__row">
                 <h5>Type:</h5>
-                <button onclick="download_type_btn(this)">Case</button>
-                <button onclick="download_type_btn(this)">Death</button>
+                <button onclick="typeBtnClick(this)" class="download_type_btn-clicked">Case</button>
+                <button onclick="typeBtnClick(this)" >Death</button>
             </div>
             <div class="content__row">
                 <h5>MSA: </h5>
@@ -160,7 +160,7 @@
             <div class="content__row">
                 <div class="content__column">
                     <h5>Start date:</h5>
-                    <input id='download__time-start' type="date">
+                    <input id='download__time-start' type="date" value = '2020-01-21'>
                 </div>
                 <div class="content__column">
                     <h5>End date:</h5>
