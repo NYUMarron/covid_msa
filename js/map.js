@@ -115,10 +115,7 @@ function map(data, geoState, geoMSA, div, type) {
         });
 }
 
-function updateMap(date, type) {
-    const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-    const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
-    const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
+function updateMap(dateString, type) {
 
     d3.selectAll('.msa_' + type)
         .attr('fill', function (d) {

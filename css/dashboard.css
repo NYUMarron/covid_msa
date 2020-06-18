@@ -149,6 +149,10 @@
     padding-top:18px;
 }
 
+.Dashboard__chart .figure{
+    font-size:14px;
+}
+
 .Dashboard__death{
     border-top:1px dashed #969696;
     padding-top:30px;
