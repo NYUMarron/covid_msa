@@ -22,9 +22,8 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     dataTransformedDaily = dataTransformedDaily.filter(d => d.date <= timeEnd);
 
     store.date = timeEnd;
-    console.log(d3.select('#date_start_'+type));
-    d3.select('#date_start_'+type).html(dateToString(timeStart));
-    d3.select('#date_end_'+type).html(dateToString(timeEnd));
+    d3.select('#date_start_'+type).html(dateToMonthDay(timeStart));
+    d3.select('#date_end_'+type).html(dateToMonthDay(timeEnd));
 
     // calculate maximum of cases or deaths and date
     let maxCase = d3.max(dataTransformed.map(d => d.cases));
@@ -168,7 +167,7 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     const value= dataTransformedDaily.filter(d=> d.date.getTime()===timeEnd.getTime())[0]['cases'];
     const valueTotal = dataTransformed.filter(d=> d.date.getTime()===timeEnd.getTime())[0]['cases'];
 
-    createTitle(svg, msa, type, dateToString(timeEnd));
+    createTitle(svg, msa, type, dateToMonthDay(timeEnd)+', '+timeEnd.getFullYear());
     createLegend(svg, lineColor, type);
     createFigure(svg, value, valueTotal, type);
 }
@@ -381,8 +380,7 @@ function createFigure(svg, value, valueTotal, type){
         .text(Math.round(valueTotal).toLocaleString());
 }
 
-function updateLineChartDash(source, type) {
-    const msa = source.value;
+function updateLineChartDash(msa, type) {
 
     if (d3.select('.clicked')._groups[0][0] !== null) {
         d3.select('.clicked').attr('class', '')
@@ -390,24 +388,19 @@ function updateLineChartDash(source, type) {
             .style('stroke-width', '1px');
     }
 
-    d3.select('#' + msa.replace(/\s/g, '').replace(/,/g, ""))
-        .attr('stroke', '#212121')
-        .style('stroke-width', '2px')
-        .attr('class', 'clicked');
-
     if (type === 'case') {
         d3.select('#svg-LineChart-case').remove();
         if (msa !== 'Select MSA') {
-            lineChartDash(store.cases, store.casesDaily, msa, d3.select('#cases-dashboard'), 'case');
+            lineChartDash(store['case']['total_cases'],store['case']['new_cases'],  msa, d3.select('#cases-dashboard'), 'case');
         } else {
-            lineChartDash(store.cases, store.casesDaily, store.msa, d3.select('#cases-dashboard'), 'case');
+            lineChartDash(store['case']['total_cases'], store['case']['new_cases'], store.msa, d3.select('#cases-dashboard'), 'case');
         }
     } else {
         d3.select('#svg-LineChart-death').remove();
         if (msa !== 'Select MSA') {
-            lineChartDash(store.deaths, store.deathsDaily, msa, d3.select('#deaths-dashboard'), 'death');
+            lineChartDash(store['death']['total_deaths'], store['death']['new_deaths'],  msa, d3.select('#deaths-dashboard'), 'death');
         } else {
-            lineChartDash(store.deaths, store.deathsDaily, store.msa, d3.select('#deaths-dashboard'), 'death');
+            lineChartDash(store['death']['total_deaths'], store['death']['new_deaths'], store.msa, d3.select('#deaths-dashboard'), 'death');
         }
     }
 }
@@ -419,7 +412,9 @@ function updateCaseDate(source) {
     const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
     const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
 
-    d3.select('#linechart-case__Date').text(dateToString(date));
+    store.caseDate = dateString;
+
+    d3.select('#linechart-case__Date').text(dateToMonthDay(date));
 
     d3.selectAll('.circles_case')
         .attr('r', 0);
@@ -430,19 +425,18 @@ function updateCaseDate(source) {
     d3.select('#case-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
         .attr('r', 3);
 
-    d3.select('#caseDaily').text(Math.round(store.casesDaily.filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#caseTotal').text(Math.round(store.cases.filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
-    updateMap(dateString, 'case');
+    d3.select('#caseDaily').text(Math.round(store['case']['new_cases'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#caseTotal').text(Math.round(store['case']['total_cases'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    updateMap(dateString, 'case', store['caseMapType']);
 }
 
 function updateDeathDate(source) {
     const date = subtractDays(store.date, 90 - source.value);
+    const dateString = dateToString(date);
 
-    const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-    const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
-    const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
+    store.deathDate = dateString;
 
-    d3.select('#linechart-death__Date').text(dateToString(date));
+    d3.select('#linechart-death__Date').text(dateToMonthDay(date));
 
     d3.selectAll('.circles_death')
         .attr('r', 0);
@@ -453,13 +447,13 @@ function updateDeathDate(source) {
     d3.select('#death-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
         .attr('r', 3);
 
-    d3.select('#deathDaily').text(Math.round(store.deathsDaily.filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#deathTotal').text(Math.round(store.deaths.filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#deathDaily').text(Math.round(store['death']['new_deaths'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#deathTotal').text(Math.round(store['death']['total_deaths'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
 
-    updateMap(dateString, 'death');
+    updateMap(dateString, 'death', store['deathMapType']);
 }
 
-function dateToString(date){
+function dateToMonthDay(date){
     const monthToString = {
         1: 'Jan',
         2: 'Feb',
@@ -475,4 +469,13 @@ function dateToString(date){
         12: 'Dec'
     };
     return monthToString[date.getMonth()+1]+' '+date.getDate();
+}
+
+function dateToString(date){
+
+    const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+    const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
+    const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
+
+    return dateString;
 }

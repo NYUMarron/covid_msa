@@ -38,7 +38,7 @@ function checkAll(source) {
 function dataExtract() {
     const timeStart = document.getElementById('download__time-start').value;
     const timeEnd = document.getElementById('download__time-end').value;
-    const dataType = document.getElementsByClassName("download_type_btn-clicked").textContent;
+    const dataType = document.getElementsByClassName("download_type_btn-clicked")[0].textContent;
     const checkboxes = document.getElementsByClassName('download__MSA-checkbox');
     let MSAArray = [];
     for (let i = 0, n = checkboxes.length; i < n; i++) {
@@ -48,9 +48,9 @@ function dataExtract() {
     }
     let dataFiltered;
     if (dataType === 'Case') {
-        dataFiltered = store.cases.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
+        dataFiltered = store.case.total_cases.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
     } else {
-        dataFiltered = store.deaths.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
+        dataFiltered = store.death.total_deaths.filter(d => MSAArray.includes(d.msas.replace(/\s/g, '').replace(/\./g, '')));
     }
     let keyLength = Object.keys(dataFiltered[0]).length;
     let dateArray = Object.keys(dataFiltered[0]).slice(1, keyLength)
@@ -79,7 +79,7 @@ function dataExtract() {
 function download_csv() {
     dataExtract();
     let hiddenElement = document.createElement('a');
-    const dataType =  document.getElementsByClassName("download_type_btn-clicked").textContent;
+    const dataType =  document.getElementsByClassName("download_type_btn-clicked")[0].textContent;
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(store.csv);
     hiddenElement.target = '_blank';
     if (dataType === 'Case') {

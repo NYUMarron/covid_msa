@@ -1,7 +1,7 @@
 const breakpointNewCase = [0.01, 5, 10, 25, 50, 100, 200, 500, 1500];
 const breakpointTotalCase = [100, 500, 1000, 5000, 10000, 20000, 50000, 100000];
 
-const breakpointTotalDeath = [];
+const breakpointTotalDeath = [1,10,20,50,100,500,1500,5000];
 const breakpointNewDeath = [0.01, 1, 2, 10, 50, 100];
 
 function map(data, geoState, geoMSA, div, type) {
@@ -28,15 +28,25 @@ function map(data, geoState, geoMSA, div, type) {
     const path = d3.geoPath().projection(projection);
 
     const breakPointArray = (type === 'case') ? breakpointNewCase : breakpointNewDeath;
+    const breakPointArrayTotal = (type=== 'case')? breakpointTotalCase:breakpointTotalDeath;
+
     const colorArray = Array.from(d3.schemeYlOrRd[breakPointArray.length - 1]);
+    const colorArrayTotal = Array.from(d3.schemeYlOrRd[breakPointArrayTotal.length - 1]);
     colorArray.unshift('#8BC34A');
-
-
-    console.log(breakPointArray);
+    colorArrayTotal.unshift('#8BC34A');
     const cScale = d3.scaleThreshold()
         .domain(breakPointArray)
         .range(colorArray);
-    store['cScaleMap_' + type] = cScale;
+
+    const cScaleTotal = d3.scaleThreshold()
+        .domain(breakPointArrayTotal)
+        .range(colorArrayTotal);
+
+    store['cScaleMap_' + type] = {};
+    store['cScaleMap_' + type]['new_'+type+'s']  =   cScale;
+    store['cScaleMap_' + type]['total_'+type+'s']  =   cScaleTotal;
+    store[type+'MapType'] = 'new_'+type+'s';
+    store[type+'Date']= dateToString(store.date);
 
     container.selectAll('.state')
         .data(geoState.features.filter(d => d.properties.NAME !== 'Puerto Rico'))
@@ -110,41 +120,49 @@ function map(data, geoState, geoMSA, div, type) {
             d3.select('#tooltipMap').remove();
         })
         .on('click', function (d) {
-            document.getElementById("msa-select").value = d.properties.NAME;
-            updateCaseLineChart();
+            document.getElementById("MSA-select-"+type).value = d.properties.NAME;
+            updateLineChartDash(d.properties.NAME,type);
         });
 }
 
-function updateMap(dateString, type) {
-
+function updateMap(dateString, type, maptype){
+    const data = store[type][maptype];
     d3.selectAll('.msa_' + type)
         .attr('fill', function (d) {
-            const data_filtered = store[type + 'sDaily'].filter(g => g.msas === d.properties.NAME)[0];
+            const data_filtered = data.filter(g => g.msas === d.properties.NAME)[0];
             if (data_filtered !== undefined) {
-                return store['cScaleMap_' + type](data_filtered[dateString]);
+                console.log(data_filtered[dateString]);
+                return store['cScaleMap_' + type][maptype](data_filtered[dateString]);
             } else {
                 return '#FFFFFF';
             }
         })
-
 }
 
 function caseMapBtnClick(source){
-    const selectedBtn = source.textContent;
+    const selectedBtn = source.value;
+    if(store['caseMapType'] !== selectedBtn){
+        store['caseMapType'] =  selectedBtn;
+    }
     source.classList.add("map_btn-clicked");
     source.parentNode.querySelectorAll('button').forEach(function(d){
-        if(d.textContent!==selectedBtn){
+        if(d.value!==selectedBtn){
             d.classList.remove("map_btn-clicked");
         }
-    })
+    });
+    updateMap(store.caseDate,'case',store['caseMapType']);
 }
 
 function deathMapBtnClick(source){
-    const selectedBtn = source.textContent;
+    const selectedBtn = source.value;
+    if(store['deathMapType'] !== selectedBtn){
+        store['deathMapType'] =  selectedBtn;
+    }
     source.classList.add("map_btn-clicked");
     source.parentNode.querySelectorAll('button').forEach(function(d){
-        if(d.textContent!==selectedBtn){
+        if(d.value!==selectedBtn){
             d.classList.remove("map_btn-clicked");
         }
-    })
+    });
+    updateMap(store.deathDate,'death',store['deathMapType']);
 }
