@@ -114,7 +114,7 @@ function map(data, geoState, geoMSA, div, type) {
         .on('mouseout', function (d) {
             if (d3.select(this).attr('class') !== 'clicked') {
                 d3.select(this)
-                    .attr('stroke', '#969696')
+                    .attr('stroke', '#CCCCCC')
                     .style('stroke-width', '1px');
             }
             d3.select('#tooltipMap').remove();
