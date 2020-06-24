@@ -1,18 +1,24 @@
-function lineChart(data, div, type, timeStartbyUser, timeEndbyUser){
-    let timeStart = d3.timeParse('%Y-%m-%d')(timeStartbyUser);
-    let timeEnd = d3.timeParse('%Y-%m-%d')(timeEndbyUser);
+function lineChart(data, div, type){
 
-    d3.selectAll('.today').text(`${timeEnd.getMonth()+1}/${timeEnd.getDate()}/${timeEnd.getFullYear()}`);
+
+
     const data_msa = data.filter(d=>d.category === 'MSA_daily')[0];
     const data_usa = data.filter(d=>d.category === 'USA_daily')[0];
     const data_msa_total = data.filter(d=>d.category === 'MSA_cumulative')[0];
     const data_usa_total = data.filter(d=>d.category === 'USA_cumulative')[0];
 
     // use caseDataPrep function in lineChartDash.js
-    const dataTransformedMSA = caseDataPrep(data_msa, timeStart, timeEnd);
-    const dataTransformedUSA = caseDataPrep(data_usa, timeStart, timeEnd);
-    const dataTransformedMSATotal =  caseDataPrep(data_msa_total, timeStart, timeEnd);
-    const dataTransformedUSATotal =  caseDataPrep(data_usa_total, timeStart, timeEnd);
+    const dataTransformedMSA = caseDataPrep(data_msa);
+    const dataTransformedUSA = caseDataPrep(data_usa);
+    const dataTransformedMSATotal =  caseDataPrep(data_msa_total);
+    const dataTransformedUSATotal =  caseDataPrep(data_usa_total);
+
+    const timeEnd = d3.max(dataTransformedMSA.map(d => d.date));
+    const timeStart = d3.min(dataTransformedMSA.map(d => d.date));
+    d3.selectAll('.today')
+        .text(`${timeEnd.getMonth()+1}/${timeEnd.getDate()}/${timeEnd.getFullYear()}`)
+        .style('font-weight','bold')
+        .style('font-size','17px');
 
     const MSA_new_case = dataTransformedMSA.filter(d=>d.date.getTime()===timeEnd.getTime())[0].cases;
     const USA_new_case = dataTransformedUSA.filter(d=>d.date.getTime()===timeEnd.getTime())[0].cases;
