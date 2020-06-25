@@ -10,20 +10,22 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     const dataFilteredDaily = dataDaily.filter(d => d['msas'] === msa)[0];
 
     // transform the dataset for d3 visualization
-    let dataTransformed = caseDataPrepDash(dataFiltered);
-    let dataTransformedDaily = caseDataPrepDash(dataFilteredDaily);
+    let dataTransformed = caseDataPrep(dataFiltered,'%Y-%m-%d');
+    let dataTransformedDaily = caseDataPrep(dataFilteredDaily,'%Y-%m-%d');
 
     const timeEndDaily = d3.max(dataTransformedDaily.map(d => d.date));
     const timeEndTotal = d3.max(dataTransformed.map(d => d.date));
     const timeEnd = d3.min([timeEndDaily, timeEndTotal]);
-    const timeStart = subtractDays(timeEnd,90);
+    const timeStart = subtractDays(timeEnd, 90);
 
     dataTransformed = dataTransformed.filter(d => d.date <= timeEnd);
+    dataTransformed = dataTransformed.filter(d => d.date >= timeStart);
     dataTransformedDaily = dataTransformedDaily.filter(d => d.date <= timeEnd);
+    dataTransformedDaily = dataTransformedDaily.filter(d => d.date >= timeStart);
 
     store.date = timeEnd;
-    d3.select('#date_start_'+type).html(dateToMonthDay(timeStart));
-    d3.select('#date_end_'+type).html(dateToMonthDay(timeEnd));
+    d3.select('#date_start_' + type).html(dateToMonthDay(timeStart));
+    d3.select('#date_end_' + type).html(dateToMonthDay(timeEnd));
 
     // calculate maximum of cases or deaths and date
     let maxCase = d3.max(dataTransformed.map(d => d.cases));
@@ -39,7 +41,7 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     const svg = div.append('svg')
         .attr('id', 'svg-LineChart-' + type)
         .attr('width', visWidth + margin.left + margin.right)
-        .attr('height', visHeight + margin.top + margin.bottom);
+        .attr("viewBox", `0 0 ${visWidth + margin.left + margin.right} ${visHeight + margin.top + margin.bottom}`);
 
     // create container (g tag) that would contain a linechart, grid, and axises
     const container = svg.append("g")
@@ -164,33 +166,12 @@ function lineChartDash(data, dataDaily, msa, div, type) {
         .transition()
         .attr('r', 3);
 
-    const value= dataTransformedDaily.filter(d=> d.date.getTime()===timeEnd.getTime())[0]['cases'];
-    const valueTotal = dataTransformed.filter(d=> d.date.getTime()===timeEnd.getTime())[0]['cases'];
+    const value = dataTransformedDaily.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
+    const valueTotal = dataTransformed.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
 
-    createTitle(svg, msa, type, dateToMonthDay(timeEnd)+', '+timeEnd.getFullYear());
+    createTitle(svg, msa, type, dateToMonthDay(timeEnd) + ', ' + timeEnd.getFullYear());
     createLegend(svg, lineColor, type);
     createFigure(svg, value, valueTotal, type);
-}
-
-function caseDataPrepDash(data) {
-    // extract dates of the dataset
-    const dateArray = Object.keys(data).filter(d => (d !== 'msas') & (d !== 'category'));
-    // transform the dataset for the d3 visualization
-    let dataTransformed = dateArray.map(function (d) {
-        let obj = {};
-        obj.date = d3.timeParse('%Y-%m-%d')(d);
-        obj.cases = data[d];
-        return obj
-    });
-
-    const timeEnd = d3.max(dataTransformed.map(d => d.date));
-    const timeStart = subtractDays(timeEnd, 90);
-
-    dataTransformed = dataTransformed.sort((a, b) => d3.ascending(a, b));
-
-    dataTransformed = dataTransformed.filter(d => d.date >= timeStart);
-
-    return dataTransformed;
 }
 
 function caseAxisDash(container, xScale, yScale, yScaleDaily, xAxis, yAxisTotal, yAxisDaily, timeEnd, visWidth, visHeight) {
@@ -345,7 +326,7 @@ function createTitle(svg, msa, type, date) {
         .style('font-size', '14px');
 }
 
-function createFigure(svg, value, valueTotal, type){
+function createFigure(svg, value, valueTotal, type) {
     const figureList = ['New cases:',
         'Days from peak:',
         'Total cases:',
@@ -363,20 +344,20 @@ function createFigure(svg, value, valueTotal, type){
         .attr('class', '.figure')
         .attr('x', (d, i) => (i % 2) * 180)
         .attr('y', (d, i) => Math.round((i + 1) / 2) * 30)
-        .text(d => d)
+        .text(d => d);
 
     figure.append('text')
-        .attr('id',type+'Daily')
-        .attr('class','.figure')
-        .attr('x',90)
-        .attr('y',31)
+        .attr('id', type + 'Daily')
+        .attr('class', '.figure')
+        .attr('x', 90)
+        .attr('y', 31)
         .text(Math.round(value).toLocaleString());
 
     figure.append('text')
-        .attr('id',type+'Total')
-        .attr('class','.figure')
-        .attr('x',90)
-        .attr('y',61)
+        .attr('id', type + 'Total')
+        .attr('class', '.figure')
+        .attr('x', 90)
+        .attr('y', 61)
         .text(Math.round(valueTotal).toLocaleString());
 }
 
@@ -391,14 +372,14 @@ function updateLineChartDash(msa, type) {
     if (type === 'case') {
         d3.select('#svg-LineChart-case').remove();
         if (msa !== 'Select MSA') {
-            lineChartDash(store['case']['total_cases'],store['case']['new_cases'],  msa, d3.select('#cases-dashboard'), 'case');
+            lineChartDash(store['case']['total_cases'], store['case']['new_cases'], msa, d3.select('#cases-dashboard'), 'case');
         } else {
             lineChartDash(store['case']['total_cases'], store['case']['new_cases'], store.msa, d3.select('#cases-dashboard'), 'case');
         }
     } else {
         d3.select('#svg-LineChart-death').remove();
         if (msa !== 'Select MSA') {
-            lineChartDash(store['death']['total_deaths'], store['death']['new_deaths'],  msa, d3.select('#deaths-dashboard'), 'death');
+            lineChartDash(store['death']['total_deaths'], store['death']['new_deaths'], msa, d3.select('#deaths-dashboard'), 'death');
         } else {
             lineChartDash(store['death']['total_deaths'], store['death']['new_deaths'], store.msa, d3.select('#deaths-dashboard'), 'death');
         }
@@ -425,8 +406,8 @@ function updateCaseDate(source) {
     d3.select('#case-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
         .attr('r', 3);
 
-    d3.select('#caseDaily').text(Math.round(store['case']['new_cases'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#caseTotal').text(Math.round(store['case']['total_cases'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#caseDaily').text(Math.round(store['case']['new_cases'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#caseTotal').text(Math.round(store['case']['total_cases'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
     updateMap(dateString, 'case', store['caseMapType']);
 }
 
@@ -447,13 +428,13 @@ function updateDeathDate(source) {
     d3.select('#death-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
         .attr('r', 3);
 
-    d3.select('#deathDaily').text(Math.round(store['death']['new_deaths'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#deathTotal').text(Math.round(store['death']['total_deaths'].filter(d=>d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#deathDaily').text(Math.round(store['death']['new_deaths'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
+    d3.select('#deathTotal').text(Math.round(store['death']['total_deaths'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
 
     updateMap(dateString, 'death', store['deathMapType']);
 }
 
-function dateToMonthDay(date){
+function dateToMonthDay(date) {
     const monthToString = {
         1: 'Jan',
         2: 'Feb',
@@ -468,10 +449,10 @@ function dateToMonthDay(date){
         11: 'Nov',
         12: 'Dec'
     };
-    return monthToString[date.getMonth()+1]+' '+date.getDate();
+    return monthToString[date.getMonth() + 1] + ' ' + date.getDate();
 }
 
-function dateToString(date){
+function dateToString(date) {
 
     const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
     const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();

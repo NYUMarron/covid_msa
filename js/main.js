@@ -21,15 +21,15 @@ Promise.all([
     d3.json('data/map/msa_simplified_filtered.geojson')
 ]).then(([cases, deaths, casesDaily, deathsDaily, geoState, geoMSA]) => {
     store['case'] = {};
-    store['case']['new_cases']= casesDaily;
+    store['case']['new_cases'] = casesDaily;
     store['case']['total_cases'] = cases;
     store['death'] = {};
     store['death']['new_deaths'] = deathsDaily;
     store['death']['total_deaths'] = deaths;
     dropdownMSA(cases, d3.selectAll('.menu__MSA-select'));
     const msa = 'New York-Newark-Jersey City, NY-NJ-PA';
-    lineChartDash(cases, casesDaily,msa, d3.select('#cases-dashboard'), 'case');
-    lineChartDash(deaths, deathsDaily,msa, d3.select('#deaths-dashboard'), 'death');
+    lineChartDash(cases, casesDaily, msa, d3.select('#cases-dashboard'), 'case');
+    lineChartDash(deaths, deathsDaily, msa, d3.select('#deaths-dashboard'), 'death');
     map(casesDaily, geoState, geoMSA, d3.select('#map_case'), 'case');
     map(deathsDaily, geoState, geoMSA, d3.select('#map_death'), 'death');
 }).then(() => dropdownMSA_download(store['case']['total_cases'], d3.select('#checkboxes')));

@@ -1,9 +1,8 @@
-function typeBtnClick(source){
+function typeBtnClick(source) {
     source.classList.add("download_type_btn-clicked");
-    if(source.textContent==='Case'){
+    if (source.textContent === 'Case') {
         source.nextElementSibling.classList.remove("download_type_btn-clicked");
-    }
-    else{
+    } else {
         source.previousElementSibling.classList.remove("download_type_btn-clicked");
     }
 }
@@ -79,7 +78,7 @@ function dataExtract() {
 function download_csv() {
     dataExtract();
     let hiddenElement = document.createElement('a');
-    const dataType =  document.getElementsByClassName("download_type_btn-clicked")[0].textContent;
+    const dataType = document.getElementsByClassName("download_type_btn-clicked")[0].textContent;
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(store.csv);
     hiddenElement.target = '_blank';
     if (dataType === 'Case') {
