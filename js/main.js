@@ -18,7 +18,7 @@ Promise.all([
     d3.csv('https://raw.githubusercontent.com/NYUMarron/covid_msa/master/data/7day_avg_cases.csv', d3.autoType),
     d3.csv('https://raw.githubusercontent.com/NYUMarron/covid_msa/master/data/7day_avg_deaths.csv', d3.autoType),
     d3.json('data/map/state_simplified.geojson'),
-    d3.json('data/map/msa_simplified_filtered.geojson')
+    d3.json('data/map/MSA_simplified_wo_water.geojson')
 ]).then(([cases, deaths, casesDaily, deathsDaily, geoState, geoMSA]) => {
     store['case'] = {};
     store['case']['new_cases'] = casesDaily;
