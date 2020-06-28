@@ -192,7 +192,9 @@ function caseDataPrep(data, timeparse) {
     let dataTransformed = dateArray.map(function (d) {
         let obj = {};
         obj.date = d3.timeParse(timeparse)(d);
-        obj.cases = data[d];
+
+        // if the value was less than 0, it change the value as 0
+        obj.cases = (data[d]>=0)?data[d]:0;
         return obj
     });
 
