@@ -205,7 +205,7 @@
                         <div class="menu_slider">
                             <h5>Date: </h5>
                             <div class="menu_slider-column">
-                                <input class="menu_slider__slider" max="90" min="0" oninput="updateCaseDate(this)" type="range"
+                                <input class="menu_slider__slider" max="90" min="0" oninput="updateDate(this,'case')" type="range"
                                        value="90">
                                 <span class="menu_slider__date-start" id="date_start_case"></span>
                                 <span class="menu_slider__date-end"  id="date_end_case"></span>
@@ -214,10 +214,32 @@
                     </div>
                 </div>
                 <div class="Dashboard__Dashboard">
-                    <div class="Dashboard__map" id='map_case'>
+                    <div class="Dashboard__map" >
+                        <div class="Dashboard__map-main" id='map_case'>
 
+                        </div>
+                        <div id="map_case-legend"></div>
                     </div>
-                    <div class="Dashboard__chart" id="cases-dashboard">
+                    <div class="Dashboard__chart">
+                        <div class="Dashboard__chart-header">
+                            <h5 id="Dashboard__chart-date-case"> </h5>
+                            <h5 id="Dashboard__chart-MSA-case"> </h5>
+                            <h5>Population: <span id="Dashboard__chart-population-case"></span> </h5>
+                        </div>
+                        <div  class="Dashboard__chart-main" id="cases-dashboard">
+                        </div>
+                        <div class="Dashboard__chart-figure">
+                            <div class="Dashboard__chart-figure-column">
+                                <p>New Cases: <span id="caseNew"></span></p>
+                                <p>Total Cases: <span id="caseTotal"></span></p>
+                                <p>Duration: ---</p>
+                            </div>
+                            <div class="Dashboard__chart-figure-column">
+                                <p>Days from peak: ---</p>
+                                <p>Share of peak value: ---</p>
+                                <p>Five day change (%): ---</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -245,7 +267,7 @@
                         <div class="menu_slider">
                             <h5>Date: </h5>
                             <div class="menu_slider-column">
-                                <input class="menu_slider__slider" max="90" min="0" oninput="updateDeathDate(this)" type="range"
+                                <input class="menu_slider__slider" max="90" min="0" oninput="updateDate(this,'death')" type="range"
                                        value="90">
                                 <span class="menu_slider__date-start" id="date_start_death"></span>
                                 <span class="menu_slider__date-end"  id="date_end_death"></span>
@@ -254,10 +276,31 @@
                     </div>
                 </div>
                 <div class="Dashboard__Dashboard">
-                    <div class="Dashboard__map" id='map_death'>
-
+                    <div class="Dashboard__map">
+                        <div class="Dashboard__map-main" id="map_death"></div>
+                        <div id="map_death-legend"></div>
                     </div>
-                    <div class="Dashboard__chart" id="deaths-dashboard">
+                    <div class="Dashboard__chart">
+                        <div class="Dashboard__chart-header">
+                            <h5 id="Dashboard__chart-date-death"> </h5>
+                            <h5 id="Dashboard__chart-MSA-death"> </h5>
+                            <h5 >Population: <span id="Dashboard__chart-population-death"></span></h5>
+                        </div>
+                        <div class="Dashboard__chart-main" id="deaths-dashboard">
+
+                        </div>
+                        <div class="Dashboard__chart-figure">
+                            <div class="Dashboard__chart-figure-column">
+                                <p>New Deaths: <span id="deathNew"></span></p>
+                                <p>Total Deaths: <span id="deathTotal"></span></p>
+                                <p>Duration: ---</p>
+                            </div>
+                            <div class="Dashboard__chart-figure-column">
+                                <p>Days from peak: ---</p>
+                                <p>Share of peak value: ---</p>
+                                <p>Five day change (%): ---</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,6 +308,7 @@
     </section>
 </main>
 </body>
+<script defer src="js/mapColorCode.js"></script>
 <script defer src="js/linechart.js"></script>
 <script defer src="js/menu.js"></script>
 <script defer src="js/linechartDash.js"></script>

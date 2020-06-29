@@ -33,14 +33,14 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     const maxDate = dataTransformedDaily.filter(d => d.cases === maxCaseDaily)[0]['date'];
 
     // set the margin of the visualization
-    const margin = {top: 160, right: 60, bottom: 140, left: 60};
-    const visWidth = 440 - margin.left - margin.right;
-    const visHeight = 440 - margin.top - margin.bottom;
+    const margin = {top: 70, right: 60, bottom: 30, left: 60};
+    const visWidth = 640 - margin.left - margin.right;
+    const visHeight = 300 - margin.top - margin.bottom;
 
     // create svg tag in the div (#cases) tag
     const svg = div.append('svg')
         .attr('id', 'svg-LineChart-' + type)
-        .attr('width', visWidth + margin.left + margin.right)
+        .attr('width', '100%')
         .attr("viewBox", `0 0 ${visWidth + margin.left + margin.right} ${visHeight + margin.top + margin.bottom}`);
 
     // create container (g tag) that would contain a linechart, grid, and axises
@@ -146,7 +146,7 @@ function lineChartDash(data, dataDaily, msa, div, type) {
 
     circlesDaily.select('#' + type + '-daily-' + timeEnd.getFullYear() + '-' + (timeEnd.getMonth() + 1) + '-' + timeEnd.getDate())
         .transition()
-        .attr('r', 3);
+        .attr('r', 4);
 
     const circlesTotal = container.append('g')
         .attr('class', 'pointsTotal');
@@ -164,14 +164,14 @@ function lineChartDash(data, dataDaily, msa, div, type) {
 
     circlesTotal.select('#' + type + '-total-' + timeEnd.getFullYear() + '-' + (timeEnd.getMonth() + 1) + '-' + timeEnd.getDate())
         .transition()
-        .attr('r', 3);
+        .attr('r', 4);
 
     const value = dataTransformedDaily.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
     const valueTotal = dataTransformed.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
 
-    createTitle(svg, msa, type, dateToMonthDay(timeEnd) + ', ' + timeEnd.getFullYear());
+    updateTitle(msa, type, dateToMonthDay(timeEnd) + ', ' + timeEnd.getFullYear());
     createLegend(svg, lineColor, type);
-    createFigure(svg, value, valueTotal, type);
+    //updateFigure(svg, value, valueTotal, type);
 }
 
 function caseAxisDash(container, xScale, yScale, yScaleDaily, xAxis, yAxisTotal, yAxisDaily, timeEnd, visWidth, visHeight) {
@@ -270,7 +270,7 @@ function dateToString(date) {
 
 function createLegend(svg, lineColor, type) {
     const legend = svg.append('g')
-        .attr('transform', 'translate(200,125)')
+        .attr('transform', 'translate(400,20)')
         .style('font-size', '12px');
 
     legend.append('line')
@@ -302,63 +302,17 @@ function createLegend(svg, lineColor, type) {
         .text('Total cases');
 }
 
-function createTitle(svg, msa, type, date) {
-    const title = svg.append('g')
-        .attr('transform', 'translate(15,60)');
+function updateTitle(msa, type, date) {
 
-    title.append('text')
-        .attr('id', 'linechart-' + type + '__Date')
-        .text(date)
-        .attr('x', 0)
-        .attr('y', 0)
-        .style('font-size', '18px');
+    d3.select('#Dashboard__chart-date-'+type)
+        .text(date);
 
-    title.append('text')
-        .text(msa)
-        .attr('x', 0)
-        .attr('y', 25)
-        .style('font-size', '14px');
+    d3.select('#Dashboard__chart-MSA-'+type)
+        .text(msa);
 
-    title.append('text')
-        .text('Population: ' + (19979477).toLocaleString())
-        .attr('x', 0)
-        .attr('y', 45)
-        .style('font-size', '14px');
-}
+    d3.select('#Dashboard__chart-population-'+type)
+        .text(store.population.filter(d=>d.MSA==msa)[0]['Population']);
 
-function createFigure(svg, value, valueTotal, type) {
-    const figureList = ['New cases:',
-        'Days from peak:',
-        'Total cases:',
-        'Share of peak value:',
-        'Duration:',
-        'Five day change (%):'];
-
-    const figure = svg.append('g')
-        .attr('id', 'figure')
-        .attr('transform', 'translate(15,330)');
-
-    figure.selectAll('.figure')
-        .data(figureList)
-        .join('text')
-        .attr('class', '.figure')
-        .attr('x', (d, i) => (i % 2) * 180)
-        .attr('y', (d, i) => Math.round((i + 1) / 2) * 30)
-        .text(d => d);
-
-    figure.append('text')
-        .attr('id', type + 'Daily')
-        .attr('class', '.figure')
-        .attr('x', 90)
-        .attr('y', 31)
-        .text(Math.round(value).toLocaleString());
-
-    figure.append('text')
-        .attr('id', type + 'Total')
-        .attr('class', '.figure')
-        .attr('x', 90)
-        .attr('y', 61)
-        .text(Math.round(valueTotal).toLocaleString());
 }
 
 function updateLineChartDash(msa, type) {
@@ -386,52 +340,30 @@ function updateLineChartDash(msa, type) {
     }
 }
 
-function updateCaseDate(source) {
+function updateDate(source,type) {
     const date = subtractDays(store.date, 90 - source.value);
 
     const dateMonth = ((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
     const dateDate = ((date.getDate()) < 10) ? '0' + date.getDate() : date.getDate();
     const dateString = date.getFullYear() + '-' + dateMonth + '-' + dateDate;
 
-    store.caseDate = dateString;
+    store[type+'Date'] = dateString;
 
-    d3.select('#linechart-case__Date').text(dateToMonthDay(date));
+    d3.select('#Dashboard__chart-date-'+type).text(dateToMonthDay(date)+','+date.getFullYear());
 
-    d3.selectAll('.circles_case')
+    d3.selectAll('.circles_'+type)
         .attr('r', 0);
 
-    d3.select('#case-daily-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
-        .attr('r', 3);
+    d3.select(`#${type}-daily-` + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+        .attr('r', 4);
 
-    d3.select('#case-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
-        .attr('r', 3);
+    d3.select(`#${type}-total-` + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+        .attr('r', 4);
 
-    d3.select('#caseDaily').text(Math.round(store['case']['new_cases'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#caseTotal').text(Math.round(store['case']['total_cases'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
-    updateMap(dateString, 'case', store['caseMapType']);
-}
-
-function updateDeathDate(source) {
-    const date = subtractDays(store.date, 90 - source.value);
-    const dateString = dateToString(date);
-
-    store.deathDate = dateString;
-
-    d3.select('#linechart-death__Date').text(dateToMonthDay(date));
-
-    d3.selectAll('.circles_death')
-        .attr('r', 0);
-
-    d3.select('#death-daily-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
-        .attr('r', 3);
-
-    d3.select('#death-total-' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
-        .attr('r', 3);
-
-    d3.select('#deathDaily').text(Math.round(store['death']['new_deaths'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
-    d3.select('#deathTotal').text(Math.round(store['death']['total_deaths'].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
-
-    updateMap(dateString, 'death', store['deathMapType']);
+    d3.select(`#${type}New`).text(Math.round(store[type][`new_${type}s`].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
+    console.log(d3.select(`#${type}Total`));
+    d3.select(`#${type}Total`).text(Math.round(store[type][`total_${type}s`].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
+    updateMap(dateString, type, store[type+'MapType']);
 }
 
 function dateToMonthDay(date) {

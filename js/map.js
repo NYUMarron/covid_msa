@@ -1,9 +1,3 @@
-const breakpointNewCase = [0.01, 5, 10, 25, 50, 100, 200, 500, 1500];
-const breakpointTotalCase = [100, 500, 1000, 5000, 10000, 20000, 50000, 100000];
-
-const breakpointTotalDeath = [1, 10, 20, 50, 100, 500, 1500, 5000];
-const breakpointNewDeath = [0.01, 1, 2, 10, 50, 100];
-
 function map(data, geoState, geoMSA, div, type) {
     // set the margin of the visualization
     const margin = {top: 0, right: 20, bottom: 0, left: 20};
@@ -13,7 +7,7 @@ function map(data, geoState, geoMSA, div, type) {
     // create svg tag in the div (#cases) tag
     const svg = div.append('svg')
         .attr('id', 'svg-map')
-        .attr('width', visWidth + margin.left + margin.right)
+        .attr('width', '100%')
         .attr("viewBox", `0 0 ${visWidth + margin.left + margin.right} ${visHeight + margin.top + margin.bottom}`);
 
     // create container (g tag) that would contain a linechart, grid, and axises
@@ -26,26 +20,6 @@ function map(data, geoState, geoMSA, div, type) {
 
     const path = d3.geoPath().projection(projection);
 
-    const breakPointArray = (type === 'case') ? breakpointNewCase : breakpointNewDeath;
-    const breakPointArrayTotal = (type === 'case') ? breakpointTotalCase : breakpointTotalDeath;
-
-    const colorArray = Array.from(d3.schemeYlOrRd[breakPointArray.length - 1]);
-    const colorArrayTotal = Array.from(d3.schemeYlOrRd[breakPointArrayTotal.length - 1]);
-
-    colorArray.unshift('#8BC34A');
-    colorArrayTotal.unshift('#8BC34A');
-
-    const cScale = d3.scaleThreshold()
-        .domain(breakPointArray)
-        .range(colorArray);
-
-    const cScaleTotal = d3.scaleThreshold()
-        .domain(breakPointArrayTotal)
-        .range(colorArrayTotal);
-
-    store['cScaleMap_' + type] = {};
-    store['cScaleMap_' + type]['new_' + type + 's'] = cScale;
-    store['cScaleMap_' + type]['total_' + type + 's'] = cScaleTotal;
     store[type + 'MapType'] = 'new_' + type + 's';
     store[type + 'Date'] = dateToString(store.date);
 
@@ -66,7 +40,7 @@ function map(data, geoState, geoMSA, div, type) {
         .attr('fill', function (d) {
             const data_filtered = data.filter(g => g.msas === d.properties.NAME)[0];
             if (data_filtered !== undefined) {
-                return cScale(data_filtered['2020-06-07']);
+                return store.cScaleMap['new_'+type+'s'].cScale(data_filtered['2020-06-07']);
             } else {
                 return '#FFFFFF';
             }
@@ -132,8 +106,7 @@ function updateMap(dateString, type, maptype) {
         .attr('fill', function (d) {
             const data_filtered = data.filter(g => g.msas === d.properties.NAME)[0];
             if (data_filtered !== undefined) {
-                console.log(data_filtered[dateString]);
-                return store['cScaleMap_' + type][maptype](data_filtered[dateString]);
+                return store['cScaleMap'][maptype]['cScale'](data_filtered[dateString]);
             } else {
                 return '#FFFFFF';
             }

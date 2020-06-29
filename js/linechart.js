@@ -60,12 +60,12 @@ function lineChart(data, div, type) {
 
     // set the margin of the visualization
     const margin = {top: 50, right: 20, bottom: 50, left: 50};
-    const visWidth = 1024 - margin.left - margin.right;
+    const visWidth = 1280 - margin.left - margin.right;
     const visHeight = 250 - margin.top - margin.bottom;
 
     // create svg tag in the div (#cases) tag
     const svg = div.append('svg')
-        .attr('width', visWidth + margin.left + margin.right)
+        .attr('width', '100%')
         .attr('height', visHeight + margin.top + margin.bottom)
         .attr("viewBox", `0 0 ${visWidth + margin.left + margin.right} ${visHeight + margin.top + margin.bottom}`);
 
