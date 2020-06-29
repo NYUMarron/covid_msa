@@ -143,12 +143,36 @@
     width:55%;
     border-right:1px solid #969696;
     display:flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .Dashboard__map-main{
     width:100%;
 }
+
+.Dashboard__map-legend{
+    display:flex;
+    flex-wrap:wrap;
+    padding-left:30px;
+    justify-content: space-between;
+}
+
+.Dashboard__map-legend>div{
+    margin-right:30px;
+    display:flex;
+    align-items: center;
+    width:160px;
+}
+
+.Dashboard__map-legend p{
+    margin:0;
+    font-size:13px;
+}
+.Dashboard__map-legend svg{
+    margin-right:8px;
+}
+
 
 .Dashboard__chart{
     width:45%;

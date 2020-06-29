@@ -50,7 +50,6 @@ function map(data, geoState, geoMSA, div, type) {
             const coordinates = d3.mouse(this);
             const xPosition = coordinates[0] + 20;
             const yPosition = coordinates[1] + 20;
-            console.log(d3.mouse(this));
             /*
             const tooltip = d3.select('#'+type+'_map')
                 .append('g')
@@ -98,6 +97,7 @@ function map(data, geoState, geoMSA, div, type) {
             document.getElementById("MSA-select-" + type).value = d.properties.NAME;
             updateLineChartDash(d.properties.NAME, type);
         });
+    createMapLegend(type);
 }
 
 function updateMap(dateString, type, maptype) {
@@ -110,7 +110,8 @@ function updateMap(dateString, type, maptype) {
             } else {
                 return '#FFFFFF';
             }
-        })
+        });
+    createMapLegend(type);
 }
 
 function caseMapBtnClick(source) {
@@ -139,4 +140,31 @@ function deathMapBtnClick(source) {
         }
     });
     updateMap(store.deathDate, 'death', store['deathMapType']);
+}
+
+function createMapLegend(type){
+    d3.select(`#map_${type}-legend`).html('');
+    const breakPoint = Array.from(store.cScaleMap[store[`${type}MapType`]]['breakPoint']);
+    breakPoint.unshift(0);
+    const legends = d3.select(`#map_${type}-legend`)
+                        .selectAll('div')
+                        .data(breakPoint)
+                        .join('div');
+
+    legends.append('svg')
+        .attr('width',15)
+        .attr('height',15)
+        .append('rect')
+        .attr('x',0)
+        .attr('y',0)
+        .attr('width',15)
+        .attr('height',15)
+        .attr('fill',d=>store.cScaleMap[store[`${type}MapType`]]['cScale'](d));
+
+    legends.append('p')
+        .html((d,i)=>store.cScaleMap[store[`${type}MapType`]]['text'][i]);
+
+    [0,1,2].forEach(d=>{
+        d3.select(`#map_${type}-legend`)
+        .append('div')});
 }
