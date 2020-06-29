@@ -354,7 +354,7 @@ function updateDate(source,type) {
 
     store[type+'Date'] = dateString;
 
-    d3.select('#Dashboard__chart-date-'+type).text(dateToMonthDay(date)+','+date.getFullYear());
+    d3.select('#Dashboard__chart-date-'+type).text(dateToMonthDay(date)+', '+date.getFullYear());
 
     d3.selectAll('.circles_'+type)
         .attr('r', 0);
