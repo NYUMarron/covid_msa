@@ -27,6 +27,9 @@ function lineChartDash(data, dataDaily, msa, div, type) {
     d3.select('#date_start_' + type).html(dateToMonthDay(timeStart));
     d3.select('#date_end_' + type).html(dateToMonthDay(timeEnd));
 
+    // this is for getting dates with slider
+    const date = subtractDays(timeEnd, 90 - document.getElementById(`${type}_slider`).value);
+
     // calculate maximum of cases or deaths and date
     let maxCase = d3.max(dataTransformed.map(d => d.cases));
     let maxCaseDaily = d3.max(dataTransformedDaily.map(d => d.cases));
@@ -140,11 +143,11 @@ function lineChartDash(data, dataDaily, msa, div, type) {
         .attr('cx', d => xScale(d.date))
         .attr('cy', d => yScaleDaily(d.cases))
         .attr('class', 'circles_' + type)
-        .attr('id', d => type + '-daily-' + d.date.getFullYear() + '-' + (d.date.getMonth() + 1) + '-' + d.date.getDate())
+        .attr('id', d => type + '-daily-' + dateToString(d.date))
         .attr('fill', '#EF5350')
         .attr('r', 0);
 
-    circlesDaily.select('#' + type + '-daily-' + timeEnd.getFullYear() + '-' + (timeEnd.getMonth() + 1) + '-' + timeEnd.getDate())
+    circlesDaily.select('#' + type + '-daily-' + dateToString(date))
         .transition()
         .attr('r', 4);
 
@@ -157,21 +160,23 @@ function lineChartDash(data, dataDaily, msa, div, type) {
         .attr('cx', d => xScale(d.date))
         .attr('cy', d => yScale(d.cases))
         .attr('class', 'circles_' + type)
-        .attr('id', d => type + '-total-' + d.date.getFullYear() + '-' + (d.date.getMonth() + 1) + '-' + d.date.getDate())
+        .attr('id', d => type + '-total-' + dateToString(d.date))
         .attr('fill', '#FFFFFF')
         .attr('stroke', '#EF7373')
         .attr('r', 0);
 
-    circlesTotal.select('#' + type + '-total-' + timeEnd.getFullYear() + '-' + (timeEnd.getMonth() + 1) + '-' + timeEnd.getDate())
+    circlesTotal.select('#' + type + '-total-' + dateToString(date))
         .transition()
         .attr('r', 4);
 
-    const value = dataTransformedDaily.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
-    const valueTotal = dataTransformed.filter(d => d.date.getTime() === timeEnd.getTime())[0]['cases'];
+    const value = dataTransformedDaily.filter(d => d.date.getTime() === date.getTime())[0]['cases'];
+    const valueTotal = dataTransformed.filter(d => d.date.getTime() === date.getTime())[0]['cases'];
+    d3.select(`#${type}New`).text(Math.round(value).toLocaleString());
+    d3.select(`#${type}Total`).text(Math.round(valueTotal).toLocaleString());
 
-    updateTitle(msa, type, dateToMonthDay(timeEnd) + ', ' + timeEnd.getFullYear());
+    updateTitle(msa, type, dateToMonthDay(date) + ', ' + date.getFullYear());
     createLegend(svg, lineColor, type);
-    //updateFigure(svg, value, valueTotal, type);
+
 }
 
 function caseAxisDash(container, xScale, yScale, yScaleDaily, xAxis, yAxisTotal, yAxisDaily, timeEnd, visWidth, visHeight) {
@@ -354,14 +359,13 @@ function updateDate(source,type) {
     d3.selectAll('.circles_'+type)
         .attr('r', 0);
 
-    d3.select(`#${type}-daily-` + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+    d3.select(`#${type}-daily-` +dateToString(date))
         .attr('r', 4);
 
-    d3.select(`#${type}-total-` + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+    d3.select(`#${type}-total-` +dateToString(date))
         .attr('r', 4);
 
     d3.select(`#${type}New`).text(Math.round(store[type][`new_${type}s`].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
-    console.log(d3.select(`#${type}Total`));
     d3.select(`#${type}Total`).text(Math.round(store[type][`total_${type}s`].filter(d => d.msas === store.msa)[0][dateString]).toLocaleString());
     updateMap(dateString, type, store[type+'MapType']);
 }
