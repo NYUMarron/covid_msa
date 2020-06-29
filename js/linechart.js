@@ -151,8 +151,8 @@ function lineChart(data, div, type) {
         .style('font-size', '12px');
 
     svg.append('line')
-        .attr('x1', 750)
-        .attr('x2', 780)
+        .attr('x1', 950)
+        .attr('x2', 980)
         .attr('y1', 30)
         .attr('y2', 30)
         .attr('stroke-width', '2px')
@@ -160,13 +160,13 @@ function lineChart(data, div, type) {
 
     svg.append('text')
         .text('Metropolitan Area')
-        .attr('x', 790)
+        .attr('x', 990)
         .attr('y', 35)
         .style('font-size', '12px');
 
     svg.append('line')
-        .attr('x1', 940)
-        .attr('x2', 970)
+        .attr('x1', 1140)
+        .attr('x2', 1170)
         .attr('y1', 30)
         .attr('y2', 30)
         .attr('stroke-width', '2px')
@@ -177,7 +177,7 @@ function lineChart(data, div, type) {
 
     svg.append('text')
         .text('USA')
-        .attr('x', 980)
+        .attr('x', 1180)
         .attr('y', 35)
         .style('font-size', '12px');
 
