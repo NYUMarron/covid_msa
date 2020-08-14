@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="605afd6a-0973-4b2e-8aa4-e6edde58b026" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/linechart.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/linechart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/linechartDash.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/linechartDash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/mapColorCode.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/mapColorCode.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +20,7 @@
       <list>
         <option value="Python Script" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -30,6 +36,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -162,6 +170,14 @@
       <workItem from="1593396508690" duration="5506000" />
       <workItem from="1593402939568" duration="56000" />
       <workItem from="1593438517084" duration="290000" />
+      <workItem from="1593563481319" duration="362000" />
+      <workItem from="1593717442440" duration="703000" />
+      <workItem from="1594169599013" duration="1050000" />
+      <workItem from="1594249052834" duration="1000000" />
+      <workItem from="1594339306387" duration="56000" />
+      <workItem from="1594612568158" duration="7000" />
+      <workItem from="1597263869179" duration="1563000" />
+      <workItem from="1597357762403" duration="6698000" />
     </task>
     <servers />
   </component>

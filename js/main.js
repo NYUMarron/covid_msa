@@ -35,4 +35,15 @@ Promise.all([
     store.cScaleMap = getColor();
     map(casesDaily, geoState, geoMSA, d3.select('#map_case'), 'case');
     map(deathsDaily, geoState, geoMSA, d3.select('#map_death'), 'death');
-}).then(() => dropdownMSA_download(store['case']['total_cases'], d3.select('#checkboxes')));
+}).then(() => {
+    dropdownMSA_download(store['case']['total_cases'], d3.select('#checkboxes'));
+
+    // this function is for responsive text size
+    d3.select(window).on("resize", function() {
+        const newWidth = d3.select("#svg-LineChart-case").style("width");
+        const newFontSize = 11 * (640 / parseInt(newWidth));
+
+        d3.selectAll(".tick").select("text")
+          .style("font-size", newFontSize)
+    });
+});

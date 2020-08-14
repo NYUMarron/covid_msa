@@ -162,7 +162,7 @@
     margin-right:30px;
     display:flex;
     align-items: center;
-    width:160px;
+    width:120px;
 }
 
 .Dashboard__map-legend p{
@@ -203,6 +203,23 @@
 .Dashboard__chart-header h5:last-child{
     margin-top:0;
 }
+
+.Dashboard__chart-legend{
+    font-size:12px;
+    width: 100%;
+    display:flex;
+    justify-content: flex-end;
+    margin-right:30px;
+}
+
+.chart-legend__column svg{
+    margin-right:5px;
+}
+
+.chart-legend__column{
+    margin-right:15px;
+}
+
 
 .Dashboard__chart-main{
     width:100%;
