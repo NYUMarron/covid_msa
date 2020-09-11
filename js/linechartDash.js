@@ -175,8 +175,7 @@ function lineChartDash(data, dataDaily, msa, div, type) {
   d3.select(`#${type}Total`).text(Math.round(valueTotal).toLocaleString());
 
   updateTitle(msa, type, dateToMonthDay(date) + ', ' + date.getFullYear());
-  createLegend(svg, lineColor, type);
-
+  createLegend(lineColor, type);
 }
 
 function caseAxisDash(container, xScale, yScale, yScaleDaily, xAxis, yAxisTotal, yAxisDaily, timeEnd, visWidth, visHeight) {
@@ -275,9 +274,11 @@ function dateToString(date) {
   return monthToString[(date.getMonth() + 1)] + ' ' + date.getDate() + ', ' + date.getFullYear();
 }
 
-function createLegend(svg, lineColor, type) {
+function createLegend(lineColor, type) {
   const legendNew = d3.select('#legend-new-'+type);
+  legendNew.html('');
   const legendTotal = d3.select('#legend-total-'+type);
+  legendTotal.html('');
 
   legendNew.append('svg')
     .attr('width',30)

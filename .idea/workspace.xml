@@ -4,11 +4,7 @@
     <list default="true" id="605afd6a-0973-4b2e-8aa4-e6edde58b026" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/linechartDash.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/linechartDash.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/mapColorCode.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/mapColorCode.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,6 +174,10 @@
       <workItem from="1594612568158" duration="7000" />
       <workItem from="1597263869179" duration="1563000" />
       <workItem from="1597357762403" duration="6698000" />
+      <workItem from="1597446362692" duration="619000" />
+      <workItem from="1598591564734" duration="12000" />
+      <workItem from="1599607727195" duration="2007000" />
+      <workItem from="1599820543344" duration="736000" />
     </task>
     <servers />
   </component>
