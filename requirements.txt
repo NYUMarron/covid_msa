@@ -5,7 +5,7 @@ Flask-Cors==3.0.9
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-numpy==1.19.1
+numpy==1.22.0
 pandas==1.1.1
 pandasql==0.7.3
 pyodbc==4.0.30
